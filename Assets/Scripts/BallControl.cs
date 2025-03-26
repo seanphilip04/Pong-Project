@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class BallControl : MonoBehaviour
 {
-    private Rigidbody2D rb2d;
-    void Start()
+    [SerializeField] private Rigidbody2D rb2d;
+    [SerializeField] private float rand;
+    private void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
         Invoke("GoBall", 2);
     }
-    void GoBall()
+    private void GoBall()
     {
         float rand = Random.Range(0, 2);
         if (rand < 1)
         { 
             rb2d.AddForce(new Vector2(20, -15));
-            // doc add force https://docs.unity3d.com/ScriptReference/Rigidbody.AddForce.html
 
         }
         else
@@ -25,13 +25,14 @@ public class BallControl : MonoBehaviour
         }
     }
 
-    void ResetBall()
+    public void ResetBall()
     {
         rb2d.velocity = Vector2.zero;
         transform.position = Vector2.zero;
     }
+    
 
-    void RestartGame()
+    public void RestartGame()
     {
         ResetBall();
         Invoke("GoBall", 1);
@@ -40,24 +41,22 @@ public class BallControl : MonoBehaviour
     [SerializeField] private int wallCollisionCount;
     private void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.name == "King")
+        // Debug.Log("Ball collided with: " + coll.gameObject.name + " | Velocity: " + rb2d.velocity);
+        if (coll.gameObject.CompareTag("Player"))
         {
-            //Debug.Log("King Punch!");
-            rb2d.AddForce(new Vector2(20,-15));
-            wallCollisionCount = 0;
+            float maxSpeed = 15f;
+            rb2d.velocity *= 1.05f;
 
+            if (rb2d.velocity.magnitude > maxSpeed)
+            {
+                rb2d.velocity = rb2d.velocity.normalized * maxSpeed;
+            }
         }
-        else if (coll.gameObject.name == "Pig")
-        {
-            rb2d.AddForce(new Vector2(-20,-15));
-            wallCollisionCount = 0;
-        }
-        else //jika terkena wall
-        {
-            wallCollisionCount = wallCollisionCount + 1;
-            Debug.Log("Wall Collision! = " + wallCollisionCount);
-            if (wallCollisionCount > 6) GoBall();
-        }
+            else 
+            {
+                wallCollisionCount = wallCollisionCount + 1;
+                // Debug.Log("Wall Collision! = " + wallCollisionCount);
+            }
     }
 
 }
