@@ -3,7 +3,13 @@ guid: 6c1fb8e6a0dfabc4b98e4f78ca9d8022
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - txtPlayerScoreL: {instanceID: 0}
+  - txtPlayerScoreR: {instanceID: 0}
+  - winCon: {instanceID: 0}
+  - txtWin: {instanceID: 0}
+  - winSound: {instanceID: 0}
+  - winnerSound: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

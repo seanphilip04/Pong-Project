@@ -6,10 +6,14 @@ public class BallControl : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb2d;
     [SerializeField] private float rand;
+    [SerializeField] private AudioClip paddleBounceSound;
+    [SerializeField] private AudioClip bounceSound;
+    private AudioSource audioSource;
     private void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
         Invoke("GoBall", 2);
+        audioSource = GetComponent<AudioSource>();
     }
     private void GoBall()
     {
@@ -50,13 +54,18 @@ public class BallControl : MonoBehaviour
             if (rb2d.velocity.magnitude > maxSpeed)
             {
                 rb2d.velocity = rb2d.velocity.normalized * maxSpeed;
+
             }
+            audioSource.clip = paddleBounceSound;
+            audioSource.Play();
         }
-            else 
-            {
-                wallCollisionCount = wallCollisionCount + 1;
-                // Debug.Log("Wall Collision! = " + wallCollisionCount);
-            }
+        else
+        {
+            // wallCollisionCount = wallCollisionCount + 1;
+            // Debug.Log("Wall Collision! = " + wallCollisionCount);
+            audioSource.clip = bounceSound;
+            audioSource.Play();
+        }
     }
 
 }
